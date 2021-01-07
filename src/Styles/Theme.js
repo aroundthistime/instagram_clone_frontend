@@ -9,6 +9,7 @@ export default {
     redColor: "#ED4956",
     blueColor: "#3897f0",
     darkBlueColor: "#003569",
+    greenColor : "#59D00A",
     boxBorder: "1px solid #e6e6e6",
     borderRadius: "4px",
     whiteBox: `border : ${BOX_BORDER};
