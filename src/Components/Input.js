@@ -16,7 +16,8 @@ const Input = ({
     value,
     onChange,
     type="text",
-    maxlength=524288
+    maxlength=524288,
+    className
 }) => (
     <Container
         placeholder={placeholder}
@@ -25,6 +26,7 @@ const Input = ({
         onChange={onChange}
         type={type}    
         maxLength={maxlength}
+        className={className}
     />
 )
 
@@ -34,6 +36,7 @@ Input.propTypes = {
     value : PropTypes.string.isRequired,
     onChange : PropTypes.func.isRequired,
     type : PropTypes.string,
+    classname : PropTypes.string
 }
 
 export default Input;

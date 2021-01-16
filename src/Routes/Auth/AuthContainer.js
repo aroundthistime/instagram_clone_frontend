@@ -81,7 +81,6 @@ export default () => {
             }
         } else if (action ==="signUp") {
             const [email, name, username] = event.target.querySelectorAll("input");
-            console.log(email, name, username);
             if (!email.classList.contains(VALID_INPUT_CLASSNAME)){
                 toast.error("Please type a valid email address");
             } else if (!username.classList.contains(VALID_INPUT_CLASSNAME)){

@@ -9,6 +9,7 @@ const Footer = styled.div`
     font-size: 12px;
     min-height : 10vh;
     opacity : 0.5;
+    margin : 20px 0px;
 `
 export default () => (
     <Footer className="no-drag">© created by aroundthistime</Footer>
