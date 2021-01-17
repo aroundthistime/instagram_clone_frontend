@@ -20,13 +20,28 @@ const PostContainer = ({
 }) => {
     const [isLikedState, setIsLiked] = useState(isLiked);
     const [likeCountsState, setLikeCounts] = useState(likeCounts);
-    const {currentItem, left, right} = useSlide(files.length - 1);
+    const [justPressedLike, setJustPressedLike] = useState(false);
+    const {
+        slideObj : {currentItem, direction},
+        left,
+        right
+    } = useSlide(files.length - 1);
     const comment = useInput("");
+    const pressLike = (event) => {
+        if (justPressedLike){
+            return;
+        }
+        setJustPressedLike(true);
+        setTimeout(() => {
+            setJustPressedLike(false);
+        }, 1500)
+        setIsLiked(true);
+    }
     const toggleLike = (event) => {
         if (isLikedState){
-            setLikeCounts(likeCountsState + 1)
+            setLikeCounts(likeCountsState - 1)
         } else{
-            setLikeCounts(likeCountsState - 1);
+            setLikeCounts(likeCountsState + 1);
         }
         setIsLiked(!isLikedState);
     }
@@ -54,11 +69,14 @@ const PostContainer = ({
     isLiked={isLikedState}
     setIsLiked={setIsLiked}
     toggleLike={toggleLike}
+    justPressedLike={justPressedLike}
+    pressLike={pressLike}
     comments={comments}
     commentCounts={commentCounts}
     createdAt={createdAt}
     newComment={comment}
     currentItem={currentItem}
+    direction={direction}
     left={left}
     right={right}
     />)}

@@ -1,29 +1,49 @@
 import { useEffect, useRef, useState } from "react";
 
+const RIGHT = "right";
+const LEFT = "left";
+
 export const useSlide = (lastIndex) => {
-    const [currentItem, setCurrentItem] = useState(0);
+    const [slideObj, setSlideObj] = useState({
+        currentItem : 0,
+        direction : null
+    });
     const left = useRef();
     const right = useRef();
     const slideLeft = (event) => {
         event.preventDefault();
+        const {currentItem} = slideObj;
         if (currentItem === 1){
-            setCurrentItem(0);
+            setSlideObj({
+                currentItem : 0,
+                direction : LEFT
+            })
             right.current.classList.remove("disabled");
             left.current.classList.add("disabled");
         } else if (currentItem > 1){
-            setCurrentItem(currentItem-1);
+            setSlideObj({
+                currentItem : currentItem - 1,
+                direction : LEFT
+            })
             right.current.classList.remove("disabled");
             left.current.classList.remove("disabled");
         }
     }
     const slideRight = (event) => {
         event.preventDefault();
+        const {currentItem} = slideObj;
         if (currentItem === lastIndex - 1){
-            setCurrentItem(lastIndex);
+            setSlideObj({
+                currentItem : lastIndex,
+                direction : RIGHT
+            })
             left.current.classList.remove("disabled");
             right.current.classList.add("disabled");
         } else if (currentItem < lastIndex - 1){
-            setCurrentItem(currentItem+1);
+            setSlideObj({
+                currentItem : currentItem + 1,
+                direction : RIGHT
+            })
             left.current.classList.remove("disabled");
             right.current.classList.remove("disabled");
         }
@@ -43,6 +63,6 @@ export const useSlide = (lastIndex) => {
                 right.current.removeEventListener("click", slideRight)
             }
         }
-    }, [currentItem]);
-    return {currentItem, left, right}
+    }, [slideObj]);
+    return {slideObj, left, right}
 }
