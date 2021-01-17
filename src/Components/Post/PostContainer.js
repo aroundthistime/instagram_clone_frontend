@@ -3,8 +3,10 @@ import PropTypes from "prop-types"
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation } from "react-apollo-hooks";
-import { ADD_COMMENT_QUERY } from "./PostQueries";
+import { ADD_COMMENT, PRESS_LIKE, TOGGLE_LIKE } from "./PostQueries";
 import { useSlide } from "../../Hooks/useSlide";
+
+let likeClickedCount = 0;
 
 const PostContainer = ({
     id,
@@ -21,13 +23,30 @@ const PostContainer = ({
     const [isLikedState, setIsLiked] = useState(isLiked);
     const [likeCountsState, setLikeCounts] = useState(likeCounts);
     const [justPressedLike, setJustPressedLike] = useState(false);
+    const comment = useInput("");
     const {
         slideObj : {currentItem, direction},
         left,
         right
     } = useSlide(files.length - 1);
-    const comment = useInput("");
-    const pressLike = (event) => {
+    const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+        variables : {
+            postId : id,
+            liked : likeClickedCount % 2 ? isLiked : !isLiked
+        }
+    });
+    const [pressLikeMutation] = useMutation(PRESS_LIKE, {
+        variables : {
+            postId : id,
+        }
+    })
+    const addCommentMutation = useMutation(ADD_COMMENT, {
+        variables : {
+            postId : id,
+            text : comment.value,
+        }
+    })
+    const pressLike = async(event) => {
         if (justPressedLike){
             return;
         }
@@ -35,15 +54,28 @@ const PostContainer = ({
         setTimeout(() => {
             setJustPressedLike(false);
         }, 1500)
+        if (isLiked){
+            if (likeClickedCount % 2 !== 0){
+                likeClickedCount += 1
+            }
+        } else{
+            if (likeClickedCount % 2 === 0){
+                likeClickedCount += 1
+            }
+        }
+        pressLikeMutation();
         setIsLiked(true);
     }
-    const toggleLike = (event) => {
-        if (isLikedState){
-            setLikeCounts(likeCountsState - 1)
-        } else{
-            setLikeCounts(likeCountsState + 1);
-        }
+    const toggleLike = async(event) => {
+        // if (isLikedState){
+        //     setLikeCounts(likeCountsState - 1)
+        // } else{
+        //     setLikeCounts(likeCountsState + 1);
+        // }
+        likeClickedCount += 1;
+        toggleLikeMutation();
         setIsLiked(!isLikedState);
+        console.log(isLiked, likeClickedCount, likeClickedCount % 2 ? !isLiked : isLiked)
     }
     // const [addComment] = useMutation(ADD_COMMENT_QUERY, {
     //     variables : {

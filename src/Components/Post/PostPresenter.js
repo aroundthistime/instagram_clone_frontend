@@ -14,6 +14,11 @@ const Post = styled(Box)`
     width : 100%;
     max-width : 600px;
     margin-bottom : 25px;
+    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
 `
 
 const PostHeader = styled.div`
@@ -180,7 +185,7 @@ const HeartPopup = styled.div`
     left : 50%;
     margin-top : -25px;
     margin-left : -25px;
-    opacity : 0.75;
+    opacity : 0.8;
     animation : ${heartPopupAnimation} 1.5s linear;
 `
 

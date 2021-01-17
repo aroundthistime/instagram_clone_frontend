@@ -86,7 +86,6 @@ export default withRouter(({history}) => {
     //     currentLocation = "home";
     // } else if (window.location.href"/direct")
     const {data} = useQuery(MY_PROFILE);
-    console.log(data);
     const search = useInput("");
     const onSearchSubmit = (event) => {
         event.preventDefault();

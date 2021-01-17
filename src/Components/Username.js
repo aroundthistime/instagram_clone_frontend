@@ -12,7 +12,7 @@ const UsernameText = styled.p`
 `
 const Username = ({username}) => (
     <Link to={`/${username}`}>
-        <UsernameText>{username}</UsernameText>
+        <UsernameText className="no-drag">{username}</UsernameText>
     </Link>
 )
 
