@@ -24,6 +24,11 @@ const QUERY = gql`
 
 function App() {
   const { data : {isLoggedIn} } = useQuery(QUERY);
+  if (localStorage.getItem("error")){
+    const errorMessage = localStorage.getItem("error");
+    toast.error(errorMessage);
+    localStorage.removeItem("error");
+  }
   return (
     <>
       <GlobalStyles></GlobalStyles>

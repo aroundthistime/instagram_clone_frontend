@@ -1,0 +1,1 @@
+export const SUBMIT_LOADER_SRC = "https://pra.com/wp-content/themes/Avada-Child-Theme/ajax-loader.gif"

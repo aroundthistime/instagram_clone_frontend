@@ -15,7 +15,7 @@ export const PRESS_LIKE = gql`
 export const ADD_COMMENT = gql`
     mutation addComment($text : String!, $postId : String!){
         addComment(text : $text, postId : $postId){
-            user{
+            user {
                 username
             }
             text

@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     justify-content : center;
     align-items : center;
     min-height : 70vh;
+    position : relative;
 `
 const FEED_QUERY = gql`
     {
@@ -25,6 +26,10 @@ const FEED_QUERY = gql`
             files{
                 id
                 url
+            }
+            tags{
+                id
+                text
             }
             likeCounts
             isLiked
@@ -54,6 +59,7 @@ export default () => {
                     id={post.id}
                     location={post.location}
                     caption={post.caption}
+                    tags={post.tags}
                     user={post.user}
                     files={post.files}
                     likeCounts={post.likeCounts}

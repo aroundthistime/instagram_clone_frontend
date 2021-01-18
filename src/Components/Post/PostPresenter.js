@@ -5,6 +5,8 @@ import { formatDate } from "../../utils";
 import Avatar from "../Avatar";
 import { HeartEmpty, HeartFull, SpeechBubble } from "../Icons";
 import Username from "../Username";
+import { SUBMIT_LOADER_SRC } from "../../consts";
+import { Link } from "react-router-dom";
 
 const Box = styled.div`
     ${props => props.theme.whiteBox}
@@ -212,8 +214,22 @@ const PostContent = styled.div`
     p{
         margin-right : 5px;
     }
+    
+`
+
+const TagsContainer = styled.p`
     margin-bottom : 15px;
 `
+
+const Tag = styled.span`
+    color : ${props => props.theme.blueColor};
+    font-size : 14px;
+    &::after{
+        content : " ";
+    }
+`
+
+
 const PostComment = styled.div`
     display : flex;
     p{
@@ -247,6 +263,7 @@ const NewComment = styled.div`
     display : flex;
     align-items : center;
     border-top : ${props => props.theme.boxBorder};
+    position : relative;
 `
 
 const InputContainer = styled(TextareaAutosize)`
@@ -282,15 +299,17 @@ const CommentInput = ({
     required=true,
     value,
     onChange,
+    onKeyPress,
     type="text",
     maxlength=524288,
-    className
+    className,
 }) => (
     <InputContainer
         placeholder={placeholder}
         required={required}
         value={value}
         onChange={onChange}
+        onKeyPress={onKeyPress}
         type={type}    
         maxLength={maxlength}
         className={className}
@@ -326,12 +345,23 @@ const getFileClassName= (isCurrent, isPrev) => {
     }
 }
 
+const SubmitLoader = styled.img`
+    width : 35px;
+    height : 35px;
+    position : absolute;
+    top : 50%;
+    left : 50%;
+    margin-left : -17.5px;
+    margin-top : -17.5px;
+`
+
 export default ({
     id,
     location,
     caption,
     user,
     files,
+    tags,
     likeCounts,
     isLiked,
     toggleLike,
@@ -340,11 +370,17 @@ export default ({
     comments,
     commentCounts,
     createdAt,
-    newComment,
+    commentValue,
+    placeholder,
+    onChange,
+    submitBtn,
+    newComments,
+    submitLoading,
     currentItem,
     direction,
     left,
-    right
+    right,
+    onKeyPress
 }) => (
     <Post>
         <PostHeader>
@@ -398,6 +434,15 @@ export default ({
                 <Username username={user.username}></Username>
                 <ContentText>{caption}</ContentText>
             </PostContent>
+            <TagsContainer>
+                {tags.length > 0 && tags.map((tag, index) => {
+                    const {text : tagContent} = tag;
+                    return(
+                    <Link to={`/search?term=${tagContent}&&mode=tag`} key={index}>
+                        <Tag key={index}>#{tagContent}</Tag>
+                    </Link>
+                )})}
+            </TagsContainer>
             {comments.length > 1 && (
             <CommentCountsText>{`View all ${commentCounts} comments`}</CommentCountsText>
             )}
@@ -407,12 +452,19 @@ export default ({
                     <ContentText>{comments[comments.length - 1].text}</ContentText>
                 </PostComment>
             )}
+            {newComments.map((newComment, index) => (
+                <PostComment key={index}>
+                    <Username username={newComment.user.username}></Username>
+                    <ContentText>{newComment.text}</ContentText>
+                </PostComment>
+            ))}
             <PostTimestamp>{formatDate(createdAt)}</PostTimestamp>
         </PostInfos>
         <form>
             <NewComment>
-                <CommentInput {...newComment} placeholder="Add a comment..." required={true}></CommentInput>
-                <InputBtn className="disabled">POST</InputBtn>
+                <CommentInput value={commentValue} onChange={onChange} placeholder={placeholder} onKeyPress={onKeyPress} required={true}></CommentInput>
+                <InputBtn className="disabled" ref={submitBtn}>POST</InputBtn>
+                {submitLoading && <SubmitLoader src={SUBMIT_LOADER_SRC}/>}
             </NewComment>
         </form>
         
