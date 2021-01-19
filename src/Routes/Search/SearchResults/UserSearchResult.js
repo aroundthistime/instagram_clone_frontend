@@ -31,16 +31,21 @@ const FollowBtn = styled.button`
     justify-content : center;
     align-items : center;
     width : 65px;
-    padding : 4px;
+    height : 24px;
     border: none;
     border-radius : 3px;
     cursor : pointer;
     font-weight : 600;
-    background-color : ${props => props.theme.blueColor};
-    color : white;
-    background : none;
-    color :  ${props => props.theme.blueColor};
     outline : none;
+    &.follow{
+        background-color : ${props => props.theme.blueColor};
+        color : white;
+    }
+    &.unfollow{
+        background : none;
+        color :  ${props => props.theme.blueColor};
+        border : 1px solid ${props => props.theme.blueColor};
+    }
 `
 
 export default ({id, username, name, avatar, isFollowing}) => {
@@ -80,7 +85,7 @@ export default ({id, username, name, avatar, isFollowing}) => {
             <Name>{name}</Name>
         </UserInfo>
         {isLoading && (
-            <FollowBtn onClick={(event) => event.preventDefault()}>
+            <FollowBtn className={isFollowingState ? "unfollow" : "follow"}onClick={(event) => event.preventDefault()}>
                 <i class="fas fa-spinner"></i>
             </FollowBtn>
         )}

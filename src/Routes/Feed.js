@@ -22,6 +22,7 @@ const FEED_QUERY = gql`
                 avatar
                 id
                 username
+                isMe
             }
             files{
                 id
@@ -31,9 +32,9 @@ const FEED_QUERY = gql`
                 id
                 text
             }
-            likeCounts
+            likesCount
             isLiked
-            commentCounts
+            commentsCount
             comments{
                 id
                 text
@@ -62,10 +63,9 @@ export default () => {
                     tags={post.tags}
                     user={post.user}
                     files={post.files}
-                    likeCounts={post.likeCounts}
                     isLiked={post.isLiked}
                     comments={post.comments}
-                    commentCounts={post.commentCounts}
+                    commentsCount={post.commentsCount}
                     createdAt={post.createdAt}
                     ></Post>)
             }

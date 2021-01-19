@@ -245,7 +245,7 @@ const ContentText = styled.div`
     word-break:break-all;
 `
 
-const CommentCountsText = styled.p`
+const CommentsCountText = styled.p`
     font-size : 14px;
     opacity : 0.5;
     margin-bottom : 10px;
@@ -362,13 +362,12 @@ export default ({
     user,
     files,
     tags,
-    likeCounts,
     isLiked,
     toggleLike,
     pressLike,
     justPressedLike,
     comments,
-    commentCounts,
+    commentsCount,
     createdAt,
     commentValue,
     placeholder,
@@ -444,7 +443,7 @@ export default ({
                 )})}
             </TagsContainer>
             {comments.length > 1 && (
-            <CommentCountsText>{`View all ${commentCounts} comments`}</CommentCountsText>
+            <CommentsCountText>{`View all ${commentsCount} comments`}</CommentsCountText>
             )}
             {comments.length > 0 && (
                 <PostComment>

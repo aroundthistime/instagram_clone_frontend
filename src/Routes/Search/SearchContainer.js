@@ -1,5 +1,4 @@
 import { Link, withRouter } from "react-router-dom"
-import {gql} from "apollo-boost";
 import queryString from "query-string";
 import styled from "styled-components";
 import { SEARCH_BY_LOCATION, SEARCH_BY_TAG, SEARCH_USER } from "./SearchQueries";
@@ -7,7 +6,7 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../Components/Loader";
 import { useState } from "react";
 import UserSearchResult from "./SearchResults/UserSearchResult";
-import PostSearchResult from "./SearchResults/PostSearchResult";
+import { PostGridContainer, PostItem } from "../../Components/PostGrid/PostGrid";
 
 const Wrapper = styled.div`
     display : flex;
@@ -66,15 +65,7 @@ const SearchResultUser = styled.ul`
     grid-row-gap: 30px;
 `
 
-const SearchResultPost = styled.ul`
-    width : 100%;
-    padding : 25px;
-    display : grid;
-    grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));
-    grid-auto-rows: min-content;
-    grid-column-gap: 30px;
-    grid-row-gap: 30px;
-`
+
 
 const NoResult = styled.div`
     display : flex;
@@ -120,7 +111,6 @@ export default withRouter(({history, location : {search}}) => {
             term : searchTerm
         }
     });
-    console.log(data);
     return (
         <Wrapper>
             <SearchTerm>
@@ -162,15 +152,18 @@ export default withRouter(({history, location : {search}}) => {
                 </SearchResultUser>
             )}
             {!loading && searchMode !== "user" && (
-                <SearchResultPost>
+                <PostGridContainer>
                     {searchMode === "location"
                         && data
                         && data.searchByLocation
                         && data.searchByLocation.map((post, index) => {
                             const thumbnail = post.files[0].url
-                            return (<PostSearchResult
+                            return (<PostItem
                                 key={index}
                                 thumbnail={thumbnail}
+                                isMyPost={post.user.isMe}
+                                likesCount={post.likesCount}
+                                commentsCount={post.commentsCount}
                             />)
                     })}
                     {searchMode === "tag"
@@ -178,13 +171,16 @@ export default withRouter(({history, location : {search}}) => {
                         && data.searchByTag
                         && data.searchByTag.map((post, index) => {
                             const thumbnail = post.files[0].url
-                            return (<PostSearchResult
+                            return (<PostItem
                                 key={index}
                                 thumbnail={thumbnail}
+                                isMyPost={post.user.isMe}
+                                likesCount={post.likesCount}
+                                commentsCount={post.commentsCount}
                             />)
                         })
                     }
-                </SearchResultPost>
+                </PostGridContainer>
             )}
             {!loading && data && (
                 (!data.searchByTag || data.searchByTag.length === 0)

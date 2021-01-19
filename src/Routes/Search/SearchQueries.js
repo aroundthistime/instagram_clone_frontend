@@ -19,6 +19,11 @@ export const SEARCH_BY_LOCATION = gql`
             files{
                 url
             }
+            user{
+                isMe
+            }
+            commentsCount
+            likesCount
         }
     }
 `
@@ -30,6 +35,11 @@ export const SEARCH_BY_TAG = gql`
             files{
                 url
             }
+            user{
+                isMe
+            }
+            commentsCount
+            likesCount
         }
     }
 `

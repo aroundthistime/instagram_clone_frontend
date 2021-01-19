@@ -1,9 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types"
-import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation } from "react-apollo-hooks";
-import { ADD_COMMENT, PRESS_LIKE, TOGGLE_LIKE } from "./PostQueries";
+import { PRESS_LIKE, TOGGLE_LIKE } from "./PostQueries";
 import { useSlide } from "../../Hooks/useSlide";
 import useInputAddComment from "../../Hooks/useInputAddComment";
 
@@ -16,17 +15,15 @@ const PostContainer = ({
     tags,
     user,
     files,
-    likeCounts,
     isLiked,
     comments,
-    commentCounts,
+    commentsCount,
     createdAt
 }) => {
     if (likeClickedCount[id] === undefined){
         likeClickedCount[id] = 0;
     }
     const [isLikedState, setIsLiked] = useState(isLiked);
-    const [likeCountsState, setLikeCounts] = useState(likeCounts);
     const [justPressedLike, setJustPressedLike] = useState(false);
     const {
         value : commentValue,
@@ -104,15 +101,13 @@ const PostContainer = ({
     user={user}
     files={files}
     tags={tags}
-    likeCounts={likeCountsState}
-    setLikeCounts={setLikeCounts}
     isLiked={isLikedState}
     setIsLiked={setIsLiked}
     toggleLike={toggleLike}
     justPressedLike={justPressedLike}
     pressLike={pressLike}
     comments={comments}
-    commentCounts={commentCounts}
+    commentsCount={commentsCount}
     createdAt={createdAt}
     placeholder={placeholder}
     commentValue={commentValue}
@@ -140,7 +135,6 @@ PostContainer.propTypes = {
         id : PropTypes.string.isRequired,
         url : PropTypes.string.isRequired
     })).isRequired,
-    likeCounts : PropTypes.number.isRequired,
     isLiked : PropTypes.bool.isRequired,
     comments : PropTypes.arrayOf(PropTypes.shape({
         id : PropTypes.string.isRequired,
@@ -150,7 +144,7 @@ PostContainer.propTypes = {
             username : PropTypes.string.isRequired
         }).isRequired
     })).isRequired,
-    commentCounts : PropTypes.number.isRequired,
+    commentsCount : PropTypes.number.isRequired,
     createdAt :  PropTypes.string,
 }
 
